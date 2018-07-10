@@ -25,5 +25,9 @@
     "url": "https://github.com/UniperCareTechnologies/AlivePing/issues"
   },
   "homepage": "https://github.com/UniperCareTechnologies/AlivePing#readme",
-  "description": ""
+  "description": "",
+  "pkg": { 
+      "assets": ["./views/**/*", "./public/**/*"] 
+  },
+  "bin": "pingservice.js"
 }

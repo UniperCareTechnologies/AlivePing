@@ -8,7 +8,7 @@ var app = express();
 
 //I need to use the templates from EJS
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.set('views', path.join(__dirname, 'views'));
 
 //Optional For HTML Engine
 //app.engine("ejs", ejs.renderFile);
@@ -22,7 +22,7 @@ app.get('/', aliveRouter.displayLastHtml);
 //Just render
 app.get('/:pagename*', function(req, res, next) {
 	var pagename = req.url;
-	res.sendFile(__dirname+'/public/'+pagename);
+	res.sendFile(path.join(__dirname,'/public/',pagename));
 });
 
 //Begin service
