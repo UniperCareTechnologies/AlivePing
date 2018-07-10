@@ -21,9 +21,9 @@ app.get('/', aliverouter.displaylasthtml);
 
 //Just render
 app.get('/:pagename*', function(req, res, next) {
-     var pagename = req.url;
-     res.sendFile(__dirname+'/public/'+pagename);
-  });
+	var pagename = req.url;
+	res.sendFile(__dirname+'/public/'+pagename);
+});
 
 //Begin service
 var server = app.listen(4000, function(){
