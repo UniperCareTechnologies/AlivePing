@@ -1,49 +1,49 @@
 var request = require("request");
-var dotenv = require('dotenv');
+var dotEnv = require('dotenv');
 
 //Configure DOTENV
-dotenv.config();
+dotEnv.config();
 
-var LastDateSent = Date.now();
-var LastDateFromLast = 0;
-var LastError = '';
-var TimeInterval = process.env.SERVERINTERVAL;
-var TimerURL = process.env.SERVERPING;
+var lastDateSent = Date.now();
+var lastDateFromLast = 0;
+var lastError = '';
+var timeInterval = process.env.SERVERINTERVAL;
+var timerURL = process.env.SERVERPING;
 
-var keepalive = {
-  displaylastcall: function(req, res, next){
-	LastDateFromLast = Date.now() - LastDateSent;
-	res.send("Seconds Elapsed = " + Math.floor(LastDateFromLast/1000))
+var keepAlive = {
+  displayLastCall: function(req, res, next){
+		lastDateFromLast = Date.now() - lastDateSent;
+		res.send("Seconds Elapsed = " + Math.floor(lastDateFromLast/1000))
   },
-  displaylasthtml: function(req, res, next){      
-	LastDateFromLast = Date.now() - LastDateSent;
-	var datestr = new Date(LastDateSent);
-	res.render('index', { elapsedtime: Math.floor(LastDateFromLast/1000), lastcalldate: datestr.toDateString(), lastcalltime: datestr.toTimeString(), servername: process.env.SERVERNAME, lasterror: LastError } );
+  displayLastHtml: function(req, res, next){      
+		lastDateFromLast = Date.now() - lastDateSent;
+		var datestr = new Date(lastDateSent);
+		res.render('index', { elapsedtime: Math.floor(lastDateFromLast/1000), lastcalldate: datestr.toDateString(), lastcalltime: datestr.toTimeString(), servername: process.env.SERVERNAME, lasterror: lastError } );
   },
-  sendping: function(){
-	request.post(TimerURL, 
+  sendPing: function(){
+		request.post(timerURL, 
 		{
 			body: { servername: process.env.SERVERNAME },
-		   	form: { servername: process.env.SERVERNAME } 
+			form: { servername: process.env.SERVERNAME } 
 		}, 
 		function(err, response, body){
 			if (err != null) {
-			   LastError = err.code + ': ' + err.errno + ' (' + err.syscall + ')';
+				lastError = err.code + ': ' + err.errno + ' (' + err.syscall + ')';
 			}
 			else {
-			   LastError = 'Successfull';
-			   LastDateSent = Date.now(); 
+				lastError = 'Successfull';
+				lastDateSent = Date.now(); 
 			}
 		}); 
   },
-  beginservice: function(){
+  beginService: function(){
     //Every 5 minutes (300 seconds)
-    	keepalive.sendping();		//Send First Ping
+    	keepAlive.sendPing();		//Send First Ping
 	setInterval(function() { 
-	   keepalive.sendping();	//Send Recurring Ping
-	}, TimeInterval);
+			keepAlive.sendPing();	//Send Recurring Ping
+	}, timeInterval);
   } 
 }
 
 // Return the object
-module.exports = keepalive;
+module.exports = keepAlive;
