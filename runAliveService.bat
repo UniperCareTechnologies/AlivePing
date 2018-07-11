@@ -1,2 +1,2 @@
-set SERVERNAME=Testing 123
+set SERVERNAME=This is a test
 aliveping.exe
