@@ -11,23 +11,16 @@ var timeInterval = parseFloat(process.env.SERVERINTERVAL);
 var timerURL = process.env.SERVERPING;
 
 var keepAlive = {
-	displayLastCall: function(req, res, next){
+	displayLastCall: function(req, res, next) {
 		lastDateFromLast = Date.now() - lastDateSent;
 		res.send("Seconds Elapsed = " + Math.floor(lastDateFromLast/1000))
 	},
-	displayLastHtml: function(req, res, next){      
+	displayLastHtml: function(req, res, next) {      
 		lastDateFromLast = Date.now() - lastDateSent;
 		var datestr = new Date(lastDateSent);
-		res.render('index', { elapsedtime: Math.floor(lastDateFromLast/1000), lastcalldate: datestr.toDateString(), lastcalltime: datestr.toTimeString(), servername: process.env.SERVERNAME, lasterror: lastError } );
-<<<<<<< HEAD
-  },
-  sendPing: function(){
-		//console.log('sendping');
-
-=======
+		res.render('index', { elapsedtime: Math.floor(lastDateFromLast/1000), lastcalldate: datestr.toDateString(), lastcalltime: datestr.toTimeString(), servername: process.env.SERVERNAME, lasterror: lastError } );	
 	},
-	sendPing: function(){
->>>>>>> fa729c40a8e069c17371caccd5eab3edc521c26b
+	sendPing: function() {
 		request.post(timerURL, 
 		{
 			body: { servername: process.env.SERVERNAME },
@@ -45,22 +38,22 @@ var keepAlive = {
 			//console.log('Error: ' + JSON.stringify(err));
 			//console.log('Body: ' + JSON.stringify(body));
 		}); 
-  },
-  beginService: function(){
-	//Every 5 minutes (300 seconds)
-	var timePrepInterval = 0;
-	if (timeInterval == 0) {
-		timePrepInterval = 100000;
-	}
-	else {
-		timePrepInterval = timeInterval;
-	}
+	},
+	beginService: function(){
+		//Every 5 minutes (300 seconds)
+		var timePrepInterval = 0;
+		if (timeInterval == 0) {
+			timePrepInterval = 100000;
+		}
+		else {
+			timePrepInterval = timeInterval;
+		}
 
-    keepAlive.sendPing();		//Send First Ping
-	setInterval(function() { 
-		keepAlive.sendPing();	//Send Recurring Ping
-	}, timeInterval);
-  } 
+		keepAlive.sendPing();		//Send First Ping
+		setInterval(function() { 
+			keepAlive.sendPing();	//Send Recurring Ping
+		}, timeInterval);
+	} 
 }
 
 // Return the object
