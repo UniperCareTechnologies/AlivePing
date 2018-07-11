@@ -7,7 +7,7 @@ dotEnv.config();
 var lastDateSent = Date.now();
 var lastDateFromLast = 0;
 var lastError = '';
-var timeInterval = process.env.SERVERINTERVAL;
+var timeInterval = parseFloat(process.env.SERVERINTERVAL);
 var timerURL = process.env.SERVERPING;
 
 var keepAlive = {
@@ -21,6 +21,8 @@ var keepAlive = {
 		res.render('index', { elapsedtime: Math.floor(lastDateFromLast/1000), lastcalldate: datestr.toDateString(), lastcalltime: datestr.toTimeString(), servername: process.env.SERVERNAME, lasterror: lastError } );
   },
   sendPing: function(){
+		//console.log('sendping');
+
 		request.post(timerURL, 
 		{
 			body: { servername: process.env.SERVERNAME },
@@ -35,13 +37,21 @@ var keepAlive = {
 				lastError = err.code + ': ' + err.errno + ' (' + err.syscall + ')';
 			}
 
-			console.log('Error: ' + JSON.stringify(err));
-			console.log('Body: ' + JSON.stringify(body));
+			//console.log('Error: ' + JSON.stringify(err));
+			//console.log('Body: ' + JSON.stringify(body));
 		}); 
   },
   beginService: function(){
-    //Every 5 minutes (300 seconds)
-    	keepAlive.sendPing();		//Send First Ping
+	//Every 5 minutes (300 seconds)
+	var timePrepInterval = 0;
+	if (timeInterval == 0) {
+		timePrepInterval = 100000;
+	}
+	else {
+		timePrepInterval = timeInterval;
+	}
+
+    keepAlive.sendPing();		//Send First Ping
 	setInterval(function() { 
 		keepAlive.sendPing();	//Send Recurring Ping
 	}, timeInterval);
