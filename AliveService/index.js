@@ -27,20 +27,23 @@ var keepAlive = {
 			form: { servername: process.env.SERVERNAME } 
 		}, 
 		function(err, response, body){
-			if (err != null) {
-				lastError = err.code + ': ' + err.errno + ' (' + err.syscall + ')';
-			}
-			else {
+			if (!err) {
 				lastError = 'Successfull';
 				lastDateSent = Date.now(); 
 			}
+			else {
+				lastError = err.code + ': ' + err.errno + ' (' + err.syscall + ')';
+			}
+
+			console.log('Error: ' + JSON.stringify(err));
+			console.log('Body: ' + JSON.stringify(body));
 		}); 
   },
   beginService: function(){
     //Every 5 minutes (300 seconds)
     	keepAlive.sendPing();		//Send First Ping
 	setInterval(function() { 
-			keepAlive.sendPing();	//Send Recurring Ping
+		keepAlive.sendPing();	//Send Recurring Ping
 	}, timeInterval);
   } 
 }
