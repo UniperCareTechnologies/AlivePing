@@ -11,16 +11,16 @@ var timeInterval = process.env.SERVERINTERVAL;
 var timerURL = process.env.SERVERPING;
 
 var keepAlive = {
-  displayLastCall: function(req, res, next){
+	displayLastCall: function(req, res, next){
 		lastDateFromLast = Date.now() - lastDateSent;
 		res.send("Seconds Elapsed = " + Math.floor(lastDateFromLast/1000))
-  },
-  displayLastHtml: function(req, res, next){      
+	},
+	displayLastHtml: function(req, res, next){      
 		lastDateFromLast = Date.now() - lastDateSent;
 		var datestr = new Date(lastDateSent);
 		res.render('index', { elapsedtime: Math.floor(lastDateFromLast/1000), lastcalldate: datestr.toDateString(), lastcalltime: datestr.toTimeString(), servername: process.env.SERVERNAME, lasterror: lastError } );
-  },
-  sendPing: function(){
+	},
+	sendPing: function(){
 		request.post(timerURL, 
 		{
 			body: { servername: process.env.SERVERNAME },
