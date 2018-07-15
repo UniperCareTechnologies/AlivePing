@@ -15,6 +15,12 @@ app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'html');
 //app.use(express.static(path.join(__dirname, 'public')));
 
+
+//SERVERPING="https://utvstatus.uniper-care.com/checkIn"
+//SERVERINTERVAL=10000
+//SERVERNAME="ENV SERVER NAME"
+
+
 //Configure only two routes to display the last ping
 app.get('/raw', aliveRouter.displayLastCall);
 app.get('/', aliveRouter.displayLastHtml);

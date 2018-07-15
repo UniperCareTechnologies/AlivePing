@@ -43,7 +43,7 @@ var keepAlive = {
 		//Every 5 minutes (300 seconds)
 		var timePrepInterval = 0;
 		if (timeInterval == 0) {
-			timePrepInterval = 100000;
+			timePrepInterval = 5 * 60 * 1000;
 		}
 		else {
 			timePrepInterval = timeInterval;
